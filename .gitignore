@@ -1,5 +1,11 @@
 *.pdf
 *.xls
 *.xlsx
+
 .env
 ex_env
+
+build/
+exe_build/
+dist/
+*.egg-info/
