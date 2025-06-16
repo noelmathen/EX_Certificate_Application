@@ -1,3 +1,5 @@
 *.pdf
+*.xls
+*.xlsx
 .env
 ex_env
