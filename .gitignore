@@ -5,7 +5,10 @@
 .env
 ex_env
 
+
 build/
 exe_build/
 dist/
 *.egg-info/
+Output/
+__pycache__/

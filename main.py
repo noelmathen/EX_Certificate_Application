@@ -18,6 +18,7 @@ from datetime import datetime
 import webbrowser
 import threading, tkinter.messagebox as msgbox
 import requests
+from packaging import version
 
 # Import our processing modules
 from src.certificate_processor import CertificateProcessor
@@ -487,19 +488,18 @@ GitHub: https://github.com/noelmathen/EX_Certificate_Application
         threading.Thread(target=self._check_for_updates, daemon=True).start()
 
     def _check_for_updates(self):
-        self.logger.info("Checking for updates…")
         try:
-            # replace with your repo
-            api = "https://api.github.com/repos/noelmathen/EX_Certificate_Application/releases/latest"
-            r = requests.get(api, timeout=8)
-            r.raise_for_status()
-            latest = r.json().get("tag_name", "")
-            current = self.config.VERSION  # see next section
-            if latest and latest != current:
-                msg = f"A new version is available:\n  GitHub: {latest}\n  You have: {current}"
-                msgbox.showinfo("Update available", msg)
+            api = f"https://api.github.com/repos/{self.config.REPO}/releases/latest"
+            latest = requests.get(api, timeout=8).json().get("tag_name", "")
+            cur, lat = self.config.VERSION, latest.lstrip("v")
+            if latest and version.parse(lat) > version.parse(cur):
+                if msgbox.askyesno("Update available",
+                                f"New version {lat} is available "
+                                f"(you have {cur}).\n\nDownload now?"):
+                    webbrowser.open(
+                        f"https://github.com/{self.config.REPO}/releases/latest")
             else:
-                msgbox.showinfo("Up to date", f"You’re running {current} — the latest!")
+                msgbox.showinfo("Up to date", f"You’re already on {cur}.")
         except Exception as e:
             msgbox.showwarning("Update check failed", str(e))
         

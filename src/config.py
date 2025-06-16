@@ -14,6 +14,7 @@ class AppConfig:
     
     # Application metadata
     VERSION = "1.0.0"
+    REPO    = "noelmathen/EX_Certificate_Application"
     APP_NAME = "proEXy"
     APP_DESCRIPTION = "Professional EX Certificate Processor"
     
